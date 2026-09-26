@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<workout_file>
+    <author>Athlete OS</author>
+    <name>z2_endurance_60min</name>
+    <description>Z2 endurance: 45min @ 65% FTP (102 W). Total 60min.</description>
+    <sportType>bike</sportType>
+    <tags>
+        <tag>z2</tag>
+        <tag>endurance</tag>
+        <tag>recovery</tag>
+    </tags>
+    <workout>
+        <Warmup Duration="600" PowerLow="0.45" PowerHigh="0.65" />
+        <SteadyState Duration="2700" Power="0.65" />
+        <Cooldown Duration="300" PowerLow="0.55" PowerHigh="0.40" />
+    </workout>
+</workout_file>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workout_file>
+  <author>Athlete OS</author>
+  <name>FTP Test 20 min</name>
+  <description>20-minute FTP test (Coggan). FTP = 95% of the 20-min average power. Ride the test segment at maximum sustainable effort — not a sprint, a controlled all-out.</description>
+  <sportType>bike</sportType>
+  <tags>ftp,test</tags>
+  <workout>
+    <Warmup Duration="600" PowerLow="0.45" PowerHigh="0.60"/>
+    <IntervalsT Repeat="2" OnDuration="60" OffDuration="60" OnPower="0.80" OffPower="0.50"/>
+    <SteadyState Duration="120" Power="0.55"/>
+    <FreeRide Duration="1200"/>
+    <Cooldown Duration="600" PowerLow="0.50" PowerHigh="0.40"/>
+  </workout>
+</workout_file>

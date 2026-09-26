@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<workout_file>
+    <author>Athlete OS</author>
+    <name>z2_endurance_90min</name>
+    <description>Z2 endurance: 10min warmup → 75min @ 65% FTP (102W) → 5min cooldown. Total 90min. Long endurance ride.</description>
+    <sportType>bike</sportType>
+    <tags>z2,endurance,long</tags>
+    <workout>
+        <Warmup Duration="600" PowerLow="0.45" PowerHigh="0.65" />
+        <SteadyState Duration="4500" Power="0.65" />
+        <Cooldown Duration="300" PowerLow="0.55" PowerHigh="0.40" />
+    </workout>
+</workout_file>
