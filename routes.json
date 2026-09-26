@@ -1,0 +1,674 @@
+[
+  {
+    "name": "Alula Adventure Loop",
+    "world": "Alula",
+    "distanceKm": 31.4,
+    "elevM": 332
+  },
+  {
+    "name": "Canyon Pass",
+    "world": "Alula",
+    "distanceKm": 31.28,
+    "elevM": 438
+  },
+  {
+    "name": "Culture Ride",
+    "world": "Alula",
+    "distanceKm": 17.37,
+    "elevM": 147
+  },
+  {
+    "name": "Heritage Climb",
+    "world": "Alula",
+    "distanceKm": 38.9,
+    "elevM": 679
+  },
+  {
+    "name": "Nabatean Trail",
+    "world": "Alula",
+    "distanceKm": 15.97,
+    "elevM": 215
+  },
+  {
+    "name": "Nomad Trail",
+    "world": "Alula",
+    "distanceKm": 18.5,
+    "elevM": 128
+  },
+  {
+    "name": "Tour Of Hegra",
+    "world": "Alula",
+    "distanceKm": 15.44,
+    "elevM": 54
+  },
+  {
+    "name": "Valley of Tombs",
+    "world": "Alula",
+    "distanceKm": 4.91,
+    "elevM": 14
+  },
+  {
+    "name": "Al Qudra",
+    "world": "Arabia",
+    "distanceKm": 12.3,
+    "elevM": 24
+  },
+  {
+    "name": "Al Wathba-L",
+    "world": "Arabia",
+    "distanceKm": 22.5,
+    "elevM": 48
+  },
+  {
+    "name": "Al Wathba-S",
+    "world": "Arabia",
+    "distanceKm": 6.2,
+    "elevM": 7
+  },
+  {
+    "name": "Arabian Knights",
+    "world": "Arabia",
+    "distanceKm": 100,
+    "elevM": 1936
+  },
+  {
+    "name": "Bahrain",
+    "world": "Arabia",
+    "distanceKm": 8.9,
+    "elevM": 110
+  },
+  {
+    "name": "Desert Pearls",
+    "world": "Arabia",
+    "distanceKm": 24.2,
+    "elevM": 119
+  },
+  {
+    "name": "Four Cities",
+    "world": "Arabia",
+    "distanceKm": 42.3,
+    "elevM": 311
+  },
+  {
+    "name": "Hudayriyat",
+    "world": "Arabia",
+    "distanceKm": 8.2,
+    "elevM": 30
+  },
+  {
+    "name": "Jabel Hafeet",
+    "world": "Arabia",
+    "distanceKm": 16.5,
+    "elevM": 735
+  },
+  {
+    "name": "Jabel Jais",
+    "world": "Arabia",
+    "distanceKm": 21.7,
+    "elevM": 925
+  },
+  {
+    "name": "King's Way",
+    "world": "Arabia",
+    "distanceKm": 13.6,
+    "elevM": 52
+  },
+  {
+    "name": "Marina Valley",
+    "world": "Arabia",
+    "distanceKm": 18,
+    "elevM": 186
+  },
+  {
+    "name": "Sands of Time",
+    "world": "Arabia",
+    "distanceKm": 22.3,
+    "elevM": 225
+  },
+  {
+    "name": "Silent Dunes",
+    "world": "Arabia",
+    "distanceKm": 7.6,
+    "elevM": 40
+  },
+  {
+    "name": "Tel Moreeb",
+    "world": "Arabia",
+    "distanceKm": 23.5,
+    "elevM": 310
+  },
+  {
+    "name": "The Seven Gems",
+    "world": "Arabia",
+    "distanceKm": 32.8,
+    "elevM": 206
+  },
+  {
+    "name": "Yas Marina Circuit",
+    "world": "Arabia",
+    "distanceKm": 5.2,
+    "elevM": 18
+  },
+  {
+    "name": "Aus Outerloop",
+    "world": "Australia",
+    "distanceKm": 37.47,
+    "elevM": 589
+  },
+  {
+    "name": "Cities Loop",
+    "world": "Australia",
+    "distanceKm": 25.7,
+    "elevM": 256
+  },
+  {
+    "name": "City Beach",
+    "world": "Australia",
+    "distanceKm": 9.44,
+    "elevM": 83
+  },
+  {
+    "name": "City Reef Park",
+    "world": "Australia",
+    "distanceKm": 13.9,
+    "elevM": 94
+  },
+  {
+    "name": "Mount Pleasant",
+    "world": "Australia",
+    "distanceKm": 9.05,
+    "elevM": 164
+  },
+  {
+    "name": "Parramatta",
+    "world": "Australia",
+    "distanceKm": 3.1,
+    "elevM": 27
+  },
+  {
+    "name": "Wollongong City",
+    "world": "Australia",
+    "distanceKm": 16.63,
+    "elevM": 238
+  },
+  {
+    "name": "Ardennes",
+    "world": "Belgium",
+    "distanceKm": 30.57,
+    "elevM": 321
+  },
+  {
+    "name": "Bruges",
+    "world": "Belgium",
+    "distanceKm": 10.56,
+    "elevM": 1
+  },
+  {
+    "name": "Brussels Town Square",
+    "world": "Belgium",
+    "distanceKm": 8.21,
+    "elevM": 0
+  },
+  {
+    "name": "Ghent",
+    "world": "Belgium",
+    "distanceKm": 12.52,
+    "elevM": 137
+  },
+  {
+    "name": "Kluisbergen",
+    "world": "Belgium",
+    "distanceKm": 24.04,
+    "elevM": 138
+  },
+  {
+    "name": "The Muur",
+    "world": "Belgium",
+    "distanceKm": 15.1,
+    "elevM": 177
+  },
+  {
+    "name": "Bhutan Outer Loop",
+    "world": "Bhutan",
+    "distanceKm": 22.8,
+    "elevM": 370
+  },
+  {
+    "name": "Dragon Fury",
+    "world": "Bhutan",
+    "distanceKm": 14.8,
+    "elevM": 283
+  },
+  {
+    "name": "Paro City",
+    "world": "Bhutan",
+    "distanceKm": 4.6,
+    "elevM": 69
+  },
+  {
+    "name": "Pele La",
+    "world": "Bhutan",
+    "distanceKm": 16.2,
+    "elevM": 300
+  },
+  {
+    "name": "Thimphu City",
+    "world": "Bhutan",
+    "distanceKm": 4.6,
+    "elevM": 19
+  },
+  {
+    "name": "Trongsa",
+    "world": "Bhutan",
+    "distanceKm": 20.5,
+    "elevM": 339
+  },
+  {
+    "name": "Bled",
+    "world": "Bled",
+    "distanceKm": 10,
+    "elevM": 0
+  },
+  {
+    "name": "Alcatraz AWOL",
+    "world": "California",
+    "distanceKm": 9.91,
+    "elevM": 108
+  },
+  {
+    "name": "Area 52",
+    "world": "California",
+    "distanceKm": 21.84,
+    "elevM": 129
+  },
+  {
+    "name": "Coast and Country",
+    "world": "California",
+    "distanceKm": 57.82,
+    "elevM": 815
+  },
+  {
+    "name": "Downtown LA",
+    "world": "California",
+    "distanceKm": 6,
+    "elevM": 9
+  },
+  {
+    "name": "Golden Gate Bridge",
+    "world": "California",
+    "distanceKm": 12.21,
+    "elevM": 100
+  },
+  {
+    "name": "Hollywood Hills",
+    "world": "California",
+    "distanceKm": 13.31,
+    "elevM": 202
+  },
+  {
+    "name": "Mount Grizzly",
+    "world": "California",
+    "distanceKm": 20.15,
+    "elevM": 165
+  },
+  {
+    "name": "San Francisco Spin",
+    "world": "California",
+    "distanceKm": 10.15,
+    "elevM": 64
+  },
+  {
+    "name": "Montreal",
+    "world": "Canada",
+    "distanceKm": 13.3,
+    "elevM": 247
+  },
+  {
+    "name": "Alto del Aguila",
+    "world": "Colombia",
+    "distanceKm": 13.1,
+    "elevM": 349
+  },
+  {
+    "name": "Amazonia",
+    "world": "Colombia",
+    "distanceKm": 8.7,
+    "elevM": 58
+  },
+  {
+    "name": "Coffee Trail",
+    "world": "Colombia",
+    "distanceKm": 27.8,
+    "elevM": 98
+  },
+  {
+    "name": "El Limonar",
+    "world": "Colombia",
+    "distanceKm": 15.8,
+    "elevM": 1037
+  },
+  {
+    "name": "El Verjon Bogota",
+    "world": "Colombia",
+    "distanceKm": 22.7,
+    "elevM": 765
+  },
+  {
+    "name": "Medellin City",
+    "world": "Colombia",
+    "distanceKm": 6.8,
+    "elevM": 34
+  },
+  {
+    "name": "Mompox City",
+    "world": "Colombia",
+    "distanceKm": 6.7,
+    "elevM": 11
+  },
+  {
+    "name": "Mystique Heights",
+    "world": "Colombia",
+    "distanceKm": 59.1,
+    "elevM": 1667
+  },
+  {
+    "name": "Paso de Alto",
+    "world": "Colombia",
+    "distanceKm": 34,
+    "elevM": 889
+  },
+  {
+    "name": "Endurance Climb",
+    "world": "Endurance Climb",
+    "distanceKm": 57.1,
+    "elevM": 2642
+  },
+  {
+    "name": "Camargue Plains",
+    "world": "France",
+    "distanceKm": 13.74,
+    "elevM": 131
+  },
+  {
+    "name": "Cobbled Classic",
+    "world": "France",
+    "distanceKm": 17.4,
+    "elevM": 116
+  },
+  {
+    "name": "Col du Galibier",
+    "world": "France",
+    "distanceKm": 36.3,
+    "elevM": 758
+  },
+  {
+    "name": "Hautacam Summit",
+    "world": "France",
+    "distanceKm": 41.3,
+    "elevM": 1206
+  },
+  {
+    "name": "Les Deux Géants",
+    "world": "France",
+    "distanceKm": 74.1,
+    "elevM": 1930
+  },
+  {
+    "name": "Paris Classic",
+    "world": "France",
+    "distanceKm": 18.6,
+    "elevM": 168
+  },
+  {
+    "name": "Toulouse Plains",
+    "world": "France",
+    "distanceKm": 7.5,
+    "elevM": 59
+  },
+  {
+    "name": "Tour de Corse",
+    "world": "France",
+    "distanceKm": 15.5,
+    "elevM": 140
+  },
+  {
+    "name": "Dust Trail",
+    "world": "Hudayriyat",
+    "distanceKm": 10.62,
+    "elevM": 171
+  },
+  {
+    "name": "Hudayriyat Ascend",
+    "world": "Hudayriyat",
+    "distanceKm": 33.2,
+    "elevM": 234
+  },
+  {
+    "name": "Hudayriyat Inner Loop",
+    "world": "Hudayriyat",
+    "distanceKm": 10.23,
+    "elevM": 18
+  },
+  {
+    "name": "Hudayriyat Octopus Loop",
+    "world": "Hudayriyat",
+    "distanceKm": 13.97,
+    "elevM": 20
+  },
+  {
+    "name": "Hudayriyat Outer Loop",
+    "world": "Hudayriyat",
+    "distanceKm": 10.65,
+    "elevM": 9
+  },
+  {
+    "name": "Hudayriyat Sprint",
+    "world": "Hudayriyat",
+    "distanceKm": 14.46,
+    "elevM": 42
+  },
+  {
+    "name": "Velodrome",
+    "world": "Hudayriyat",
+    "distanceKm": 15.48,
+    "elevM": 41
+  },
+  {
+    "name": "Anime and Origami",
+    "world": "Japan",
+    "distanceKm": 7.36,
+    "elevM": 88
+  },
+  {
+    "name": "Edo Circuit",
+    "world": "Japan",
+    "distanceKm": 8.39,
+    "elevM": 46
+  },
+  {
+    "name": "Heian Express",
+    "world": "Japan",
+    "distanceKm": 4.06,
+    "elevM": 23
+  },
+  {
+    "name": "Heian Samurai Circuit",
+    "world": "Japan",
+    "distanceKm": 4.97,
+    "elevM": 12
+  },
+  {
+    "name": "Hikari Hills",
+    "world": "Japan",
+    "distanceKm": 19.07,
+    "elevM": 251
+  },
+  {
+    "name": "Kaido Circuit",
+    "world": "Japan",
+    "distanceKm": 6.2,
+    "elevM": 0
+  },
+  {
+    "name": "Mount Fuji",
+    "world": "Japan",
+    "distanceKm": 28.78,
+    "elevM": 1016
+  },
+  {
+    "name": "Noboru",
+    "world": "Japan",
+    "distanceKm": 56.68,
+    "elevM": 1584
+  },
+  {
+    "name": "Saka No Michi",
+    "world": "Japan",
+    "distanceKm": 18.82,
+    "elevM": 457
+  },
+  {
+    "name": "Tokyo Drift",
+    "world": "Japan",
+    "distanceKm": 2,
+    "elevM": 0
+  },
+  {
+    "name": "Arctic Trail",
+    "world": "Mywhoosh World",
+    "distanceKm": 5.9,
+    "elevM": 19
+  },
+  {
+    "name": "Blaze and Blizzard",
+    "world": "Mywhoosh World",
+    "distanceKm": 23.96,
+    "elevM": 1014
+  },
+  {
+    "name": "Frostfire Vale",
+    "world": "Mywhoosh World",
+    "distanceKm": 36.42,
+    "elevM": 603
+  },
+  {
+    "name": "Mystic Metropolis",
+    "world": "Mywhoosh World",
+    "distanceKm": 11.74,
+    "elevM": 145
+  },
+  {
+    "name": "Rift Racer",
+    "world": "Mywhoosh World",
+    "distanceKm": 6.92,
+    "elevM": 66
+  },
+  {
+    "name": "Sky City Highway",
+    "world": "Mywhoosh World",
+    "distanceKm": 4.83,
+    "elevM": 51
+  },
+  {
+    "name": "Snowfall Mountain",
+    "world": "Mywhoosh World",
+    "distanceKm": 239.6,
+    "elevM": 8854
+  },
+  {
+    "name": "The Enchanted Forest",
+    "world": "Mywhoosh World",
+    "distanceKm": 5.42,
+    "elevM": 58
+  },
+  {
+    "name": "Ride",
+    "world": "Supertri",
+    "distanceKm": 2,
+    "elevM": 20
+  },
+  {
+    "name": "Run",
+    "world": "Supertri",
+    "distanceKm": 1,
+    "elevM": 0
+  },
+  {
+    "name": "Capital Circuit",
+    "world": "Switzerland",
+    "distanceKm": 11.87,
+    "elevM": 67
+  },
+  {
+    "name": "Heart of Switzerland",
+    "world": "Switzerland",
+    "distanceKm": 25.7,
+    "elevM": 111
+  },
+  {
+    "name": "Lake Lucerne Loop",
+    "world": "Switzerland",
+    "distanceKm": 14.6,
+    "elevM": 33
+  },
+  {
+    "name": "Limmat Loop",
+    "world": "Switzerland",
+    "distanceKm": 17.6,
+    "elevM": 37
+  },
+  {
+    "name": "Old Town Sprint",
+    "world": "Switzerland",
+    "distanceKm": 6,
+    "elevM": 16
+  },
+  {
+    "name": "Seeblick Spin",
+    "world": "Switzerland",
+    "distanceKm": 4.8,
+    "elevM": 19
+  },
+  {
+    "name": "Zurich",
+    "world": "Switzerland",
+    "distanceKm": 26.9,
+    "elevM": 466
+  },
+  {
+    "name": "Stage 1",
+    "world": "UCI 2024",
+    "distanceKm": 1.7,
+    "elevM": 7
+  },
+  {
+    "name": "Stage 2",
+    "world": "UCI 2024",
+    "distanceKm": 8.9,
+    "elevM": 203
+  },
+  {
+    "name": "Stage 3",
+    "world": "UCI 2024",
+    "distanceKm": 4,
+    "elevM": 68
+  },
+  {
+    "name": "The Mountain's Verdict",
+    "world": "UCI 2025",
+    "distanceKm": 8.4,
+    "elevM": 751
+  },
+  {
+    "name": "The Puncher's Playground",
+    "world": "UCI 2025",
+    "distanceKm": 12,
+    "elevM": 299
+  },
+  {
+    "name": "The Sprinter's Paradise",
+    "world": "UCI 2025",
+    "distanceKm": 1.5,
+    "elevM": 26
+  }
+]
