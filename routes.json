@@ -670,5 +670,17 @@
     "world": "UCI 2025",
     "distanceKm": 1.5,
     "elevM": 26
+  },
+  {
+    "name": "Stage 1",
+    "world": "UCI 2026",
+    "distanceKm": 7.63,
+    "elevM": 98
+  },
+  {
+    "name": "Stage 2",
+    "world": "UCI 2026",
+    "distanceKm": 5,
+    "elevM": 36
   }
 ]

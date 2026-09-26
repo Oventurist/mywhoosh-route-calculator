@@ -102,7 +102,7 @@ describe('parseZwo', () => {
   });
 
   it('real file totals', () => {
-    const files = readdirSync(fixtureDir).sort();
+    const files = readdirSync(fixtureDir).filter((f) => f.endsWith('.zwo')).sort();
     assert.equal(files.length, 8);
     const totals = files.map(
       (f) => parseZwo(readFileSync(join(fixtureDir, f), 'utf8'), { ftp: 156 }).totalSeconds,

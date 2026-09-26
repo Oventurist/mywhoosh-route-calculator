@@ -1,0 +1,29 @@
+name: Refresh routes
+
+on:
+  schedule:
+    - cron: '0 6 * * 0' # weekly, Sunday 06:00 UTC
+  workflow_dispatch: # allow manual runs from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/refresh-routes.mjs
+      - run: node --test tests/zwo.test.js tests/physics.test.js tests/routes.test.js tests/match.test.js tests/refresh.test.js
+      - name: Commit updated routes.json
+        run: |
+          git diff --quiet routes.json || {
+            git config user.name "routes-bot"
+            git config user.email "routes-bot@users.noreply.github.com"
+            git add routes.json
+            git commit -m "data: weekly route refresh"
+            git push
+          }
