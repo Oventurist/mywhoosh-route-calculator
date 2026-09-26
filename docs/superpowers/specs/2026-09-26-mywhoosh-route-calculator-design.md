@@ -63,9 +63,11 @@ list with time margins.
 ## 6. UI (`index.html`)
 - Inputs: FTP, weight, FreeRide% (default 70). Drag-and-drop `.zwo`.
 - Workout summary line: total time, avg watts, FreeRide badge if applicable.
-- Route list fittest-first: name, world, dist/elev, predicted time range,
+- Route list fittest-first (tightest fit = smallest non-negative spare
+  time first): name, world, dist/elev, predicted time range,
   minutes to spare. Toggle "only show fits" (default ON) + "allow 5 min
-  over" for close calls. Client-side only.
+  over" (relaxes the fit rule to pessimistic ≤ duration + 5 min) for
+  close calls. Client-side only.
 
 ## 7. Architecture (static SPA, no build — Approach 1)
 - `index.html`, `zwo.js`, `physics.js`, `routes.json`,
