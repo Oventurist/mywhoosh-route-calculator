@@ -24,6 +24,12 @@ const errorEl = $('error');
 const noticeEl = $('notice');
 const summaryEl = $('summary');
 const resultsEl = $('results');
+const matchCountEl = $('match-count');
+const idleEl = $('telemetry-idle');
+const fileBadgeEl = $('file-loaded-badge');
+const fileNameEl = $('file-loaded-name');
+const btnMetricEl = $('btn-metric');
+const btnImperialEl = $('btn-imperial');
 
 let routes = null;
 let workout = null;
@@ -69,6 +75,8 @@ function readWeightKg() {
 
 function onUnitsChange() {
   const metric = isMetric();
+  if (btnMetricEl) btnMetricEl.classList.toggle('active', metric);
+  if (btnImperialEl) btnImperialEl.classList.toggle('active', !metric);
   const v = parseFloat(weightEl.value);
   if (Number.isFinite(v) && v > 0) {
     const converted = metric ? lbToKg(v) : kgToLb(v);
@@ -76,7 +84,7 @@ function onUnitsChange() {
   }
   weightEl.placeholder = metric ? 'e.g. 75' : 'e.g. 165';
   weightEl.step = metric ? '0.1' : '1';
-  if (weightUnitLabelEl) weightUnitLabelEl.textContent = metric ? 'kg' : 'lb';
+  if (weightUnitLabelEl) weightUnitLabelEl.textContent = metric ? 'KG' : 'LB';
   try {
     localStorage.setItem('units', unitSystem());
   } catch (e) {
@@ -88,7 +96,11 @@ function onUnitsChange() {
 function render() {
   errorEl.textContent = '';
   noticeEl.textContent = '';
-  if (!workout || !routes) return;
+  if (!workout || !routes) {
+    if (matchCountEl) matchCountEl.textContent = 'No workout loaded';
+    if (idleEl) idleEl.style.display = '';
+    return;
+  }
 
   const ftp = readNumber(ftpEl);
   const weight = readWeightKg();
@@ -125,37 +137,73 @@ function render() {
   } else if (frShare > 0.15) {
     const badge = document.createElement('span');
     badge.className = 'badge';
+    badge.style.cssText = 'display:inline-block;margin-left:.6rem;padding:.1rem .5rem;border:1px solid var(--volt);color:var(--volt);font-family:"JetBrains Mono",monospace;font-size:.72rem;font-weight:700;';
     badge.textContent = `${fmtClock(parsed.freerideSeconds)} FreeRide @ ${freeridePct}% assumed`;
     summaryEl.appendChild(badge);
   }
 
   resultsEl.innerHTML = '';
+  const fitsCount = shown.filter((r) => r.fits).length;
+  if (matchCountEl) {
+    matchCountEl.textContent = `Matched routes: ${shown.length} candidate${shown.length === 1 ? '' : 's'} • ${fitsCount} fit`;
+  }
+  if (idleEl) idleEl.style.display = 'none';
   if (shown.length === 0) {
-    const li = document.createElement('li');
-    li.textContent = 'No routes fit this workout. Try "Allow 5 min over", or a longer workout.';
-    resultsEl.appendChild(li);
+    const tr = document.createElement('tr');
+    tr.className = 'empty-row';
+    const td = document.createElement('td');
+    td.colSpan = 7;
+    td.textContent = 'No routes fit this workout. Try "Allow 5 min over", or a longer workout.';
+    tr.appendChild(td);
+    resultsEl.appendChild(tr);
     return;
   }
   for (const r of shown) {
-    const li = document.createElement('li');
-    const title = document.createElement('div');
-    const fitMark = r.fits ? '✓' : '✗';
-    title.innerHTML = '';
-    title.append(
-      document.createTextNode(`${fitMark} ${r.route.name} `),
-      Object.assign(document.createElement('span'), {
-        className: 'muted',
-        textContent: `(${r.route.world}, ${formatDistance(r.route.distanceKm, unitSystem())}, ${formatElevation(r.route.elevM, unitSystem())})`,
-      }),
-    );
-    const pred = document.createElement('div');
-    pred.textContent = `Predicted ${fmtRange(r.lowS, r.highS)}`;
-    const spare = document.createElement('span');
-    spare.className = r.fits ? 'spare-ok' : 'spare-bad';
-    spare.textContent = ` ${fmtSpare(r.spareS)} to spare`;
-    pred.appendChild(spare);
-    li.append(title, pred);
-    resultsEl.appendChild(li);
+    const tr = document.createElement('tr');
+
+    const statusTd = document.createElement('td');
+    const badge = document.createElement('span');
+    const closeCall = r.fits && r.spareS < 0;
+    badge.className = `fit-badge ${r.fits ? (closeCall ? 'fit-close' : 'fit-ok') : 'fit-no'}`;
+    badge.textContent = r.fits ? (closeCall ? '± Close call' : '✓ Fit') : '✗ Over';
+    statusTd.appendChild(badge);
+
+    const routeTd = document.createElement('td');
+    const world = document.createElement('div');
+    world.className = 'route-world';
+    world.textContent = r.route.world;
+    const name = document.createElement('div');
+    name.className = 'route-name';
+    name.textContent = r.route.name;
+    routeTd.append(world, name);
+
+    const distTd = document.createElement('td');
+    distTd.className = 'n num';
+    distTd.textContent = formatDistance(r.route.distanceKm, unitSystem());
+
+    const elevTd = document.createElement('td');
+    elevTd.className = 'n num';
+    elevTd.textContent = formatElevation(r.route.elevM, unitSystem());
+
+    const gradeTd = document.createElement('td');
+    gradeTd.className = 'n num';
+    gradeTd.textContent = r.route.distanceKm > 0
+      ? `${((r.route.elevM / (r.route.distanceKm * 1000)) * 100).toFixed(1)}%`
+      : '—';
+
+    const predTd = document.createElement('td');
+    predTd.className = 'n num';
+    predTd.textContent = fmtRange(r.lowS, r.highS);
+
+    const deltaTd = document.createElement('td');
+    deltaTd.style.textAlign = 'center';
+    const delta = document.createElement('span');
+    delta.className = `delta ${r.fits ? 'delta-ok' : 'delta-bad'}`;
+    delta.textContent = `${fmtSpare(r.spareS)} to spare`;
+    deltaTd.appendChild(delta);
+
+    tr.append(statusTd, routeTd, distTd, elevTd, gradeTd, predTd, deltaTd);
+    resultsEl.appendChild(tr);
   }
 }
 
@@ -175,6 +223,8 @@ async function loadFile(file) {
   }
   workout = text;
   fileName = file.name;
+  if (fileNameEl) fileNameEl.textContent = file.name;
+  if (fileBadgeEl) fileBadgeEl.classList.add('show');
   render();
 }
 
@@ -210,6 +260,8 @@ for (const el of [ftpEl, weightEl, freerideEl, onlyFitsEl, allowOverEl]) {
   el.addEventListener('change', render);
 }
 unitsEl.addEventListener('change', onUnitsChange);
+if (btnMetricEl) btnMetricEl.addEventListener('click', () => { unitsEl.value = 'metric'; onUnitsChange(); });
+if (btnImperialEl) btnImperialEl.addEventListener('click', () => { unitsEl.value = 'imperial'; onUnitsChange(); });
 
 // Restore the saved preference (default Imperial), then sync the
 // weight field's placeholder/step/label to it.

@@ -4,78 +4,393 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MyWhoosh Route Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { color-scheme: light dark; }
-  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 0 auto; padding: 16px; line-height: 1.4; }
-  label { display: block; margin: 12px 0 4px; font-weight: 600; }
-  input[type="number"] { width: 100%; min-height: 44px; font-size: 1.1rem; padding: 8px; box-sizing: border-box; }
-  .weight-row { display: flex; gap: 8px; }
-  .weight-row input { flex: 1; }
-  #weight-unit-label { min-width: 2.5em; align-self: center; }
-  #units { min-height: 44px; font-size: 1.1rem; padding: 8px; }
-  #drop { border: 2px dashed #888; border-radius: 8px; padding: 28px 16px; text-align: center; margin: 16px 0; cursor: pointer; min-height: 44px; }
-  #drop.over { border-color: currentColor; }
-  .row { display: flex; gap: 12px; align-items: center; min-height: 44px; }
-  .row label { margin: 0; font-weight: 400; }
-  button { min-height: 44px; font-size: 1rem; padding: 8px 16px; }
-  #error { color: #b00020; font-weight: 600; margin: 12px 0; }
-  #notice { color: #8a5d00; font-weight: 600; margin: 12px 0; }
-  #summary { margin: 12px 0; font-size: 1.1rem; }
-  .badge { display: inline-block; border: 1px solid currentColor; border-radius: 4px; padding: 1px 6px; font-size: 0.85rem; margin-left: 8px; }
-  ul#results { list-style: none; padding: 0; }
-  ul#results li { border-bottom: 1px solid #8883; padding: 10px 0; }
-  .spare-ok { color: #137333; font-weight: 700; }
-  .spare-bad { color: #b00020; font-weight: 700; }
-  .muted { opacity: 0.75; }
-  #serving-hint { display: none; border: 1px solid currentColor; border-radius: 8px; padding: 12px; margin: 12px 0; }
+  :root {
+    --volt: #D4FF00;
+    --volt-hover: #BCE600;
+    --navy-950: #070C1B;
+    --navy-900: #0B132B;
+    --navy-850: #111A38;
+    --navy-800: #1C2541;
+    --surface: #F8FAFC;
+    --line: #E2E8F0;
+    --muted: #64748B;
+    --amber: #FDE68A;
+    --error: #ba1a1a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    background: #fff;
+    color: var(--navy-900);
+    line-height: 1.5;
+  }
+  .font-display { font-family: "Space Grotesk", system-ui, sans-serif; }
+  .font-mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+  /* Header */
+  header.topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,.95);
+    border-bottom: 2px solid rgba(11,19,43,.1);
+  }
+  .wrap { max-width: 80rem; margin: 0 auto; padding: 0 3rem; }
+  @media (max-width: 768px) { .wrap { padding: 0 1.5rem; } }
+  .topbar-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    height: 5rem;
+  }
+  .brand { display: flex; align-items: center; gap: .75rem; }
+  .brand-mark {
+    width: 2rem; height: 2rem; background: var(--navy-900); color: var(--volt);
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Space Grotesk", sans-serif; font-weight: 800; font-size: 1.1rem;
+  }
+  .brand-name { font-family: "Space Grotesk", sans-serif; font-weight: 800; font-size: 1.4rem; letter-spacing: -.02em; text-transform: uppercase; }
+  .brand-name u { text-decoration-color: var(--volt); text-decoration-thickness: 4px; }
+  .brand-tag {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: var(--navy-900); color: #fff;
+    font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700;
+    letter-spacing: .08em; padding: .25rem .6rem; text-transform: uppercase;
+  }
+  .brand-tag .dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--volt); }
+  .unit-toggle {
+    display: flex; align-items: center; background: var(--navy-900);
+    padding: .25rem; gap: .25rem;
+  }
+  .unit-toggle button {
+    border: 0; cursor: pointer; min-height: 2rem; padding: .25rem .8rem;
+    font-family: "JetBrains Mono", monospace; font-size: .75rem; font-weight: 700;
+    text-transform: uppercase; background: transparent; color: rgba(255,255,255,.7);
+  }
+  .unit-toggle button.active { background: var(--volt); color: var(--navy-950); }
+  .unit-toggle button:not(.active):hover { color: #fff; }
+
+  /* Hero */
+  .hero {
+    background: var(--navy-900); color: #fff;
+    border-bottom: 4px solid var(--volt);
+    position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(108deg, transparent 0%, transparent 54%, var(--volt) 54.3%, var(--volt) 55.4%, var(--navy-950) 55.5%, var(--navy-950) 100%);
+    opacity: .95;
+  }
+  @media (max-width: 1024px) { .hero::after { display: none; } }
+  .hero-grid {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr; gap: 3rem;
+    padding: 4rem 0; align-items: center;
+  }
+  @media (min-width: 1024px) { .hero-grid { grid-template-columns: 7fr 5fr; padding: 6rem 0; } }
+  .hero-kicker {
+    display: inline-block; padding: .25rem .75rem; margin-bottom: 1.5rem;
+    background: rgba(255,255,255,.1); border-left: 4px solid var(--volt);
+    font-family: "JetBrains Mono", monospace; font-size: .75rem; font-weight: 700;
+    color: var(--volt); text-transform: uppercase; letter-spacing: .08em;
+  }
+  .hero h1 {
+    font-family: "Space Grotesk", sans-serif; font-weight: 800;
+    text-transform: uppercase; letter-spacing: -.02em; line-height: 1.05;
+    font-size: 2.25rem; margin: 0 0 1.5rem;
+  }
+  @media (min-width: 1024px) { .hero h1 { font-size: 3.75rem; } }
+  .hero h1 .accent { color: var(--volt); display: inline-block; transform: skewX(-6deg); }
+  .hero p.lead { color: rgba(255,255,255,.9); max-width: 36rem; margin: 0 0 2rem; font-size: 1.05rem; }
+  .hero p.lead code { font-family: "JetBrains Mono", monospace; color: var(--volt); background: var(--navy-950); border: 1px solid rgba(212,255,0,.3); padding: 0 .4rem; font-weight: 700; font-size: .85em; }
+  .privacy-pill {
+    display: inline-flex; align-items: center; gap: .6rem;
+    background: var(--navy-950); border: 1px solid rgba(212,255,0,.4);
+    padding: .6rem 1rem; font-family: "JetBrains Mono", monospace; font-size: .8rem; color: rgba(255,255,255,.9);
+  }
+  .telemetry {
+    background: var(--navy-950); border: 2px solid var(--volt);
+    padding: 1.75rem; box-shadow: 6px 6px 0px var(--volt);
+    position: relative; max-width: 28rem; width: 100%; justify-self: end;
+  }
+  .telemetry-flag {
+    position: absolute; top: -.8rem; right: 1.5rem;
+    background: var(--volt); color: var(--navy-950);
+    font-family: "Space Grotesk", sans-serif; font-weight: 800; font-size: .7rem;
+    text-transform: uppercase; letter-spacing: .12em; padding: .15rem .7rem;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  }
+  .telemetry-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,.15);
+    font-family: "JetBrains Mono", monospace; font-size: .72rem; text-transform: uppercase;
+  }
+  .telemetry-head .ready { color: var(--volt); font-weight: 700; }
+  #summary { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 1.15rem; color: #fff; margin: 1rem 0 .25rem; }
+  #summary:empty { display: none; }
+  #notice { font-family: "JetBrains Mono", monospace; font-size: .75rem; color: var(--amber); margin: 0 0 .5rem; }
+  #notice:empty { display: none; }
+  .telemetry-idle { font-family: "JetBrains Mono", monospace; font-size: .8rem; color: rgba(255,255,255,.6); margin: 1rem 0 .25rem; }
+  .telemetry-bar { background: var(--navy-850); height: .75rem; border: 1px solid rgba(255,255,255,.2); padding: 2px; margin: 1rem 0 .75rem; }
+  .telemetry-bar > div { background: var(--volt); height: 100%; width: 82%; position: relative; }
+  .telemetry-foot { display: flex; justify-content: space-between; font-family: "JetBrains Mono", monospace; font-size: .7rem; color: rgba(255,255,255,.6); }
+  .telemetry-foot strong { color: #fff; background: rgba(255,255,255,.1); padding: .1rem .5rem; }
+
+  /* Calculator */
+  .calc { padding: 3.5rem 0; }
+  .calc-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+  @media (min-width: 1024px) { .calc-grid { grid-template-columns: 5fr 7fr; } }
+  .card { background: var(--surface); border: 2px solid var(--navy-900); padding: 1.5rem; box-shadow: 6px 6px 0px var(--navy-900); position: relative; }
+  @media (min-width: 1024px) { .card { padding: 2rem; } }
+  .card h2 { font-family: "Space Grotesk", sans-serif; font-weight: 800; font-size: 1.25rem; text-transform: uppercase; letter-spacing: -.01em; margin: 0; display: flex; align-items: center; gap: .5rem; }
+  .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: .75rem; border-bottom: 2px solid rgba(11,19,43,.1); }
+  .card-head .tag { font-family: "JetBrains Mono", monospace; font-size: .7rem; font-weight: 700; color: rgba(11,19,43,.6); text-transform: uppercase; }
+  .field { margin-bottom: 1.5rem; }
+  .field label.flabel { display: block; font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .5rem; }
+  .input-wrap { position: relative; }
+  .input-wrap input[type="number"] {
+    width: 100%; min-height: 3.25rem; padding: .5rem 4.5rem .5rem 1rem;
+    background: #fff; border: 2px solid var(--navy-900); border-radius: 0;
+    font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: 1.25rem; color: var(--navy-900);
+  }
+  .input-wrap input[type="number"]:focus { outline: none; border-color: var(--volt); box-shadow: 0 0 0 2px var(--navy-900); }
+  .input-unit {
+    position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+    font-family: "JetBrains Mono", monospace; font-weight: 800; font-size: .8rem; color: rgba(11,19,43,.5);
+  }
+  .field-hint { font-size: .75rem; color: var(--muted); margin-top: .4rem; }
+  .filters { background: #fff; border: 2px solid var(--navy-900); padding: 1.25rem; box-shadow: 6px 6px 0px var(--navy-900); }
+  .filters-title { font-family: "Space Grotesk", sans-serif; font-weight: 800; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; padding-bottom: .6rem; border-bottom: 1px solid var(--line); margin-bottom: .8rem; }
+  .check { display: flex; align-items: center; gap: .75rem; cursor: pointer; padding: .35rem 0; font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: .75rem; text-transform: uppercase; }
+  .check input { width: 1rem; height: 1rem; accent-color: var(--navy-900); }
+
+  /* Dropzone */
+  .dropzone {
+    background: var(--surface); border: 3px dashed rgba(11,19,43,.4);
+    padding: 2.5rem 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; cursor: pointer; box-shadow: 6px 6px 0px var(--navy-900);
+    transition: border-color .15s; min-height: 100%;
+  }
+  .dropzone:hover, .dropzone.over { border-color: var(--navy-900); }
+  .drop-icon {
+    width: 5rem; height: 5rem; background: var(--navy-900); color: var(--volt);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; transform: skewX(-12deg); border: 2px solid var(--navy-900); margin-bottom: 1.5rem;
+  }
+  .drop-icon span { transform: skewX(12deg); }
+  .dropzone:hover .drop-icon { background: var(--volt); color: var(--navy-950); }
+  .step-flag {
+    background: var(--navy-900); color: var(--volt);
+    font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700;
+    padding: .15rem .6rem; margin-bottom: 1rem;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  }
+  .dropzone h3 { font-family: "Space Grotesk", sans-serif; font-weight: 800; font-size: 1.5rem; text-transform: uppercase; margin: 0 0 .5rem; }
+  .dropzone p { font-size: .85rem; color: var(--muted); max-width: 28rem; margin: 0 0 1.5rem; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--navy-900); color: #fff; border: 2px solid var(--navy-900);
+    font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: .75rem;
+    text-transform: uppercase; letter-spacing: .1em; padding: .8rem 1.5rem; cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--volt); color: var(--navy-950); }
+  .file-badge {
+    display: none; align-items: center; gap: .5rem; margin-top: 1.5rem;
+    background: var(--volt); border: 1px solid var(--navy-900); color: var(--navy-950);
+    font-family: "JetBrains Mono", monospace; font-size: .75rem; font-weight: 700;
+    padding: .4rem 1rem;
+  }
+  .file-badge.show { display: inline-flex; }
+
+  /* Banners */
+  #serving-hint {
+    display: none; border: 2px solid var(--navy-900); background: var(--amber);
+    padding: .8rem 1rem; margin: 0 0 1.5rem; font-size: .85rem; font-weight: 600;
+  }
+  #error { color: var(--error); font-weight: 700; margin: .5rem 0; }
+  #error:empty { display: none; }
+
+  /* Results */
+  .results-sec { padding: 3rem 0; border-top: 2px solid rgba(11,19,43,.1); }
+  .results-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1.5rem; margin-bottom: 2rem; }
+  .results-head h2 { font-family: "Space Grotesk", sans-serif; font-weight: 800; font-size: 1.9rem; text-transform: uppercase; letter-spacing: -.02em; margin: .6rem 0 0; }
+  .count-flag {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--volt); border: 1px solid var(--navy-900);
+    font-family: "JetBrains Mono", monospace; font-size: .72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .08em; padding: .25rem .7rem;
+  }
+  .table-shell { overflow-x: auto; background: #fff; border: 2px solid var(--navy-900); box-shadow: 6px 6px 0px var(--navy-900); }
+  table.results { width: 100%; border-collapse: collapse; text-align: left; font-size: .875rem; min-width: 760px; }
+  table.results thead tr { background: var(--navy-900); color: #fff; font-family: "JetBrains Mono", monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+  table.results th { padding: .9rem 1rem; font-weight: 700; }
+  table.results tbody tr { border-top: 2px solid rgba(11,19,43,.1); }
+  table.results tbody tr:hover { background: rgba(212,255,0,.2); }
+  table.results td { padding: 1rem; vertical-align: top; }
+  .fit-badge {
+    display: inline-block; padding: .25rem .6rem; white-space: nowrap;
+    font-family: "Space Grotesk", sans-serif; font-weight: 800; font-size: 11px;
+    text-transform: uppercase; letter-spacing: .06em;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    border: 1px solid var(--navy-900);
+  }
+  .fit-ok { background: var(--volt); color: var(--navy-950); }
+  .fit-close { background: var(--amber); color: var(--navy-950); }
+  .fit-no { background: #fff; color: var(--navy-950); }
+  .route-world { font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: .15rem; }
+  .route-name { font-family: "Space Grotesk", sans-serif; font-weight: 800; font-size: 1rem; text-transform: uppercase; }
+  .num { font-family: "JetBrains Mono", monospace; font-weight: 700; white-space: nowrap; }
+  td.n { text-align: right; }
+  .delta {
+    display: inline-block; font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: .75rem;
+    border: 1px solid rgba(11,19,43,.3); padding: .15rem .5rem; white-space: nowrap;
+  }
+  .delta-ok { background: rgba(212,255,0,.5); }
+  .delta-bad { background: #E2E8F0; }
+  .empty-row td { text-align: center; color: var(--muted); padding: 2rem; }
+
+  footer.appfoot { background: var(--navy-950); color: #fff; border-top: 4px solid var(--volt); padding: 2.5rem 0; margin-top: 3rem; }
+  footer.appfoot .foot-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+  footer.appfoot .muted-line { color: #94A3B8; font-family: "JetBrains Mono", monospace; font-size: .72rem; }
 </style>
 </head>
 <body>
-<h1>MyWhoosh Route Calculator</h1>
-<p class="muted">Drop in a <code>.zwo</code> workout, enter your FTP + weight, and see which MyWhoosh routes fit the workout time. Everything runs in this page — your file never leaves your device.</p>
 
-<div id="serving-hint">The app couldn't load its route data. Serve this folder over HTTP (e.g. <code>npx serve</code>) or use the GitHub Pages link — opening <code>index.html</code> directly from disk blocks data loading in most browsers.</div>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">
+      <span class="brand-mark font-display">V</span>
+      <span class="brand-name">MyWhoosh <u>Calculator</u></span>
+      <span class="brand-tag"><span class="dot"></span>MyWhoosh</span>
+    </div>
+    <div class="unit-toggle" role="group" aria-label="Unit system">
+      <button id="btn-metric" type="button">Metric</button>
+      <button id="btn-imperial" type="button">Imperial</button>
+    </div>
+  </div>
+  <!-- Functional unit state (buttons above are the visible control) -->
+  <select id="units" aria-label="Unit system" hidden>
+    <option value="imperial" selected>Imperial (mi, ft, lb)</option>
+    <option value="metric">Metric (km, m, kg)</option>
+  </select>
+</header>
 
-<div class="row">
-<label for="units">Units</label>
-<select id="units" aria-label="Unit system">
-<option value="imperial" selected>Imperial (mi, ft, lb)</option>
-<option value="metric">Metric (km, m, kg)</option>
-</select>
-</div>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-kicker">Track-grade simulation algorithm</div>
+      <h1>Calculate your route.<br><span class="accent">Nail the effort.</span></h1>
+      <p class="lead">Drop any <code>.zwo</code> workout file. The app simulates course gradients and rider wattage to match you with a course you finish as your workout ends.</p>
+      <div class="privacy-pill"><span>&#128274;</span><span>Everything runs in this page &mdash; your file never leaves your device.</span></div>
+    </div>
+    <div class="telemetry">
+      <div class="telemetry-flag">Live telemetry calibration</div>
+      <div class="telemetry-head"><span>Active physics model</span><span class="ready">&#9679; Ready</span></div>
+      <div id="summary"></div>
+      <div id="notice"></div>
+      <div class="telemetry-idle" id="telemetry-idle">Load a .zwo file to calibrate predictions.</div>
+      <div class="telemetry-bar"><div></div></div>
+      <div class="telemetry-foot"><span>Estimated precision</span><strong>&plusmn; 60 seconds</strong></div>
+    </div>
+  </div>
+</section>
 
-<label for="ftp">FTP (watts)</label>
-<input id="ftp" type="number" min="1" step="1" value="156" inputmode="numeric">
+<main class="wrap">
+  <div id="serving-hint">The app couldn't load its route data. Serve this folder over HTTP (e.g. <code>npx serve</code>) or use the GitHub Pages link &mdash; opening <code>index.html</code> directly from disk blocks data loading in most browsers.</div>
 
-<label for="weight">Weight</label>
-<div class="weight-row">
-<input id="weight" type="number" min="1" step="1" placeholder="e.g. 165" inputmode="decimal" aria-describedby="weight-unit-label">
-<span id="weight-unit-label" class="muted">lb</span>
-</div>
+  <section class="calc">
+    <div class="calc-grid">
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <h2>Rider specifications</h2>
+            <span class="tag">Physics base</span>
+          </div>
 
-<label for="freeride">FreeRide assumption (% of FTP)</label>
-<input id="freeride" type="number" min="1" max="150" step="1" value="70" inputmode="numeric">
+          <div class="field">
+            <label class="flabel" for="ftp">FTP threshold (watts)</label>
+            <div class="input-wrap">
+              <input id="ftp" type="number" min="1" step="1" value="156" inputmode="numeric">
+              <span class="input-unit">WATTS</span>
+            </div>
+          </div>
 
-<div id="drop" role="button" tabindex="0" aria-label="Upload a ZWO file">
-  Drop a <code>.zwo</code> file here, or <button id="pick" type="button">choose a file</button>
-  <input id="file" type="file" accept=".zwo" hidden>
-</div>
+          <div class="field">
+            <label class="flabel" for="weight">Rider weight</label>
+            <div class="input-wrap">
+              <input id="weight" type="number" min="1" step="1" placeholder="e.g. 165" inputmode="decimal" aria-describedby="weight-unit-label">
+              <span class="input-unit" id="weight-unit-label">lb</span>
+            </div>
+          </div>
 
-<div class="row">
-  <input id="onlyfits" type="checkbox" checked>
-  <label for="onlyfits">Only show routes that fit</label>
-</div>
-<div class="row">
-  <input id="allowover" type="checkbox">
-  <label for="allowover">Allow 5 min over (close calls)</label>
-</div>
+          <div class="field">
+            <label class="flabel" for="freeride">FreeRide assumption (% of FTP)</label>
+            <div class="input-wrap">
+              <input id="freeride" type="number" min="1" max="150" step="1" value="70" inputmode="numeric">
+              <span class="input-unit">%</span>
+            </div>
+            <div class="field-hint">Used where the workout has no power target (FreeRide blocks).</div>
+          </div>
+        </div>
 
-<div id="error" role="alert"></div>
-<div id="notice"></div>
-<div id="summary"></div>
-<ul id="results"></ul>
+        <div class="filters" style="margin-top: 1.5rem;">
+          <div class="filters-title">Matching filter criteria</div>
+          <label class="check"><input id="onlyfits" type="checkbox" checked><span>Only show routes that fit</span></label>
+          <label class="check"><input id="allowover" type="checkbox"><span>Allow 5 min over (close calls)</span></label>
+        </div>
+      </div>
 
-<footer class="muted" style="margin-top: 24px; font-size: 0.85rem;">© 2026 Oventurist. All rights reserved.</footer>
+      <div>
+        <div class="dropzone" id="drop" role="button" tabindex="0" aria-label="Upload a ZWO file">
+          <div class="step-flag">Step 1: import file</div>
+          <div class="drop-icon"><span>&#8681;</span></div>
+          <h3 class="font-display">Drop your .zwo file here</h3>
+          <p>Compatible with workouts exported from TrainingPeaks, Zwift, intervals.icu, or custom XML structures. Or <button id="pick" type="button" class="btn-primary" style="padding:.4rem .9rem;">choose a file</button></p>
+          <input id="file" type="file" accept=".zwo" hidden>
+          <div class="file-badge" id="file-loaded-badge"><span>&#10003;</span><span id="file-loaded-name"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="error" role="alert"></div>
+
+  <section class="results-sec">
+    <div class="results-head">
+      <div>
+        <div class="count-flag" id="match-count">No workout loaded</div>
+        <h2 class="font-display">Optimal course pairings</h2>
+      </div>
+    </div>
+    <div class="table-shell">
+      <table class="results">
+        <thead>
+          <tr>
+            <th>Status / Fit</th>
+            <th>World &amp; course route</th>
+            <th style="text-align:right">Distance</th>
+            <th style="text-align:right">Elevation</th>
+            <th style="text-align:right">Avg grade</th>
+            <th style="text-align:right">Predicted</th>
+            <th style="text-align:center">Delta margin</th>
+          </tr>
+        </thead>
+        <tbody id="results"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer class="appfoot">
+  <div class="wrap foot-inner">
+    <div style="display:flex;align-items:center;gap:.6rem;">
+      <span class="brand-mark" style="background:var(--volt);color:var(--navy-950);width:1.75rem;height:1.75rem;font-size:.85rem;">V</span>
+      <span class="font-display" style="font-weight:800;text-transform:uppercase;">MyWhoosh Route Calculator</span>
+    </div>
+    <span class="muted-line">&copy; 2026 Oventurist. All rights reserved. All data processed locally.</span>
+  </div>
+</footer>
 
 <script>
   window.__appReady = false;
