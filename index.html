@@ -11,7 +11,8 @@
   input[type="number"] { width: 100%; min-height: 44px; font-size: 1.1rem; padding: 8px; box-sizing: border-box; }
   .weight-row { display: flex; gap: 8px; }
   .weight-row input { flex: 1; }
-  .weight-row select { min-height: 44px; font-size: 1.1rem; padding: 8px; }
+  #weight-unit-label { min-width: 2.5em; align-self: center; }
+  #units { min-height: 44px; font-size: 1.1rem; padding: 8px; }
   #drop { border: 2px dashed #888; border-radius: 8px; padding: 28px 16px; text-align: center; margin: 16px 0; cursor: pointer; min-height: 44px; }
   #drop.over { border-color: currentColor; }
   .row { display: flex; gap: 12px; align-items: center; min-height: 44px; }
@@ -35,16 +36,21 @@
 
 <div id="serving-hint">The app couldn't load its route data. Serve this folder over HTTP (e.g. <code>npx serve</code>) or use the GitHub Pages link — opening <code>index.html</code> directly from disk blocks data loading in most browsers.</div>
 
+<div class="row">
+<label for="units">Units</label>
+<select id="units" aria-label="Unit system">
+<option value="imperial" selected>Imperial (mi, ft, lb)</option>
+<option value="metric">Metric (km, m, kg)</option>
+</select>
+</div>
+
 <label for="ftp">FTP (watts)</label>
 <input id="ftp" type="number" min="1" step="1" value="156" inputmode="numeric">
 
 <label for="weight">Weight</label>
 <div class="weight-row">
-<input id="weight" type="number" min="1" step="1" placeholder="e.g. 165" inputmode="decimal">
-<select id="weight-unit" aria-label="Weight unit">
-<option value="lb" selected>lb</option>
-<option value="kg">kg</option>
-</select>
+<input id="weight" type="number" min="1" step="1" placeholder="e.g. 165" inputmode="decimal" aria-describedby="weight-unit-label">
+<span id="weight-unit-label" class="muted">lb</span>
 </div>
 
 <label for="freeride">FreeRide assumption (% of FTP)</label>

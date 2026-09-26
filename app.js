@@ -3,12 +3,18 @@
 // verified manually (see plan Task 4 Step 5).
 import { parseZwo } from './zwo.js';
 import { rankRoutes } from './match.js';
+import {
+  kgToLb,
+  lbToKg,
+  formatDistance,
+  formatElevation,
+} from './units.js';
 
 const $ = (id) => document.getElementById(id);
 const ftpEl = $('ftp');
 const weightEl = $('weight');
-const weightUnitEl = $('weight-unit');
-const LB_PER_KG = 2.20462;
+const unitsEl = $('units');
+const weightUnitLabelEl = $('weight-unit-label');
 const freerideEl = $('freeride');
 const onlyFitsEl = $('onlyfits');
 const allowOverEl = $('allowover');
@@ -47,21 +53,35 @@ function readNumber(el) {
   return Number.isFinite(v) && v > 0 ? v : null;
 }
 
+function unitSystem() {
+  return unitsEl && unitsEl.value === 'metric' ? 'metric' : 'imperial';
+}
+
+function isMetric() {
+  return unitSystem() === 'metric';
+}
+
 function readWeightKg() {
   const v = readNumber(weightEl);
   if (v === null) return null;
-  return weightUnitEl && weightUnitEl.value === 'kg' ? v : v / LB_PER_KG;
+  return isMetric() ? v : lbToKg(v);
 }
 
-function onUnitChange() {
+function onUnitsChange() {
+  const metric = isMetric();
   const v = parseFloat(weightEl.value);
   if (Number.isFinite(v) && v > 0) {
-    const converted =
-      weightUnitEl.value === 'kg' ? v / LB_PER_KG : v * LB_PER_KG;
+    const converted = metric ? lbToKg(v) : kgToLb(v);
     weightEl.value = String(Math.round(converted * 10) / 10);
   }
-  weightEl.placeholder = weightUnitEl.value === 'kg' ? 'e.g. 75' : 'e.g. 165';
-  weightEl.step = weightUnitEl.value === 'kg' ? '0.1' : '1';
+  weightEl.placeholder = metric ? 'e.g. 75' : 'e.g. 165';
+  weightEl.step = metric ? '0.1' : '1';
+  if (weightUnitLabelEl) weightUnitLabelEl.textContent = metric ? 'kg' : 'lb';
+  try {
+    localStorage.setItem('units', unitSystem());
+  } catch (e) {
+    /* private mode: preference just doesn't persist */
+  }
   render();
 }
 
@@ -125,7 +145,7 @@ function render() {
       document.createTextNode(`${fitMark} ${r.route.name} `),
       Object.assign(document.createElement('span'), {
         className: 'muted',
-        textContent: `(${r.route.world}, ${r.route.distanceKm} km, ${r.route.elevM} m)`,
+        textContent: `(${r.route.world}, ${formatDistance(r.route.distanceKm, unitSystem())}, ${formatElevation(r.route.elevM, unitSystem())})`,
       }),
     );
     const pred = document.createElement('div');
@@ -189,7 +209,17 @@ for (const el of [ftpEl, weightEl, freerideEl, onlyFitsEl, allowOverEl]) {
   el.addEventListener('input', render);
   el.addEventListener('change', render);
 }
-weightUnitEl.addEventListener('change', onUnitChange);
+unitsEl.addEventListener('change', onUnitsChange);
+
+// Restore the saved preference (default Imperial), then sync the
+// weight field's placeholder/step/label to it.
+try {
+  const saved = localStorage.getItem('units');
+  if (saved === 'metric' || saved === 'imperial') unitsEl.value = saved;
+} catch (e) {
+  /* private mode: fall back to the Imperial default */
+}
+onUnitsChange();
 
 try {
   const res = await fetch('./routes.json');
