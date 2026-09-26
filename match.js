@@ -13,7 +13,10 @@ export function rankRoutes(
       distanceKm: route.distanceKm,
       elevM: route.elevM,
     });
-    const spareS = totalSeconds - highS;
+    // Non-finite estimates (degenerate inputs) never reach the UI as NaN:
+    // they are maximally unfit instead.
+    let spareS = totalSeconds - highS;
+    if (!Number.isFinite(spareS)) spareS = -Infinity;
     return { route, lowS, midS, highS, spareS, fits: spareS + allowOverS >= 0 };
   });
   rows.sort((a, b) => {

@@ -112,7 +112,10 @@ export function parseZwo(xmlString, { ftp, freeridePct = 70 } = {}) {
       continue;
     }
 
-    if (dur === undefined || dur <= 0) continue; // missing-Duration: skip
+    if (dur === undefined || dur <= 0) {
+      console.warn(`parseZwo: skipping <${tag}> with missing/non-positive Duration`);
+      continue; // missing-Duration: skip
+    }
     if (tag === 'FreeRide') {
       const w =
         a.Power !== undefined || a.PowerLow !== undefined

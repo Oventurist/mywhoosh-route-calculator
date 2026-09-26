@@ -122,4 +122,27 @@ describe('parseZwo', () => {
       /ftp/,
     );
   });
+
+  it('throws on malformed XML', () => {
+    assert.throws(() => parseZwo('hello world', { ftp: 200 }), /workout/);
+  });
+
+  it('Repeat="0" defaults to 1', () => {
+    const r = parseZwo(
+      wrap(
+        '<IntervalsT Repeat="0" OnDuration="60" OffDuration="60" OnPower="0.8" OffPower="0.5"/>',
+      ),
+      { ftp: 200 },
+    );
+    assert.equal(r.totalSeconds, 120);
+  });
+
+  it('segments missing Duration are skipped', () => {
+    const r = parseZwo(
+      wrap('<SteadyState Power="0.9"/><SteadyState Duration="60" Power="1.0"/>'),
+      { ftp: 200 },
+    );
+    assert.equal(r.totalSeconds, 60);
+    assert.equal(r.avgWatts, 200);
+  });
 });

@@ -71,4 +71,25 @@ describe('rankRoutes', () => {
     assert.ok(Number.isFinite(row.spareS), `spareS=${row.spareS}`);
     assert.equal(row.fits, true);
   });
+
+  it('degenerate workout never yields NaN or fits', () => {
+    const rows = rankRoutes({ totalSeconds: 0, avgWatts: 0 }, [ROUTE_A, ROUTE_C], {
+      weightKg: 75,
+      allowOverS: 0,
+    });
+    for (const row of rows) {
+      assert.ok(!Number.isNaN(row.spareS), `spareS=${row.spareS}`);
+      assert.equal(row.fits, false);
+    }
+  });
+
+  it('undefined elevation never yields NaN', () => {
+    const [row] = rankRoutes(
+      { totalSeconds: 3600, avgWatts: 150 },
+      [{ name: 'U', world: 'Test', distanceKm: 10, elevM: undefined }],
+      { weightKg: 75, allowOverS: 0 },
+    );
+    assert.ok(!Number.isNaN(row.spareS), `spareS=${row.spareS}`);
+    assert.equal(row.fits, false);
+  });
 });

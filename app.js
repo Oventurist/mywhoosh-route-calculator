@@ -68,6 +68,10 @@ function render() {
     errorEl.textContent = `Could not parse ${fileName}: ${e.message}`;
     return;
   }
+  if (!(parsed.totalSeconds > 0)) {
+    errorEl.textContent = `No timed segments found in ${fileName}. Previous results kept.`;
+    return;
+  }
 
   const allowOverS = allowOverEl.checked ? 300 : 0;
   const rows = rankRoutes(parsed, routes, { weightKg: weight, allowOverS });
