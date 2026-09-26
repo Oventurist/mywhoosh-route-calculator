@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MyWhoosh Route Calculator</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 0 auto; padding: 16px; line-height: 1.4; }
+  label { display: block; margin: 12px 0 4px; font-weight: 600; }
+  input[type="number"] { width: 100%; min-height: 44px; font-size: 1.1rem; padding: 8px; box-sizing: border-box; }
+  #drop { border: 2px dashed #888; border-radius: 8px; padding: 28px 16px; text-align: center; margin: 16px 0; cursor: pointer; min-height: 44px; }
+  #drop.over { border-color: currentColor; }
+  .row { display: flex; gap: 12px; align-items: center; min-height: 44px; }
+  .row label { margin: 0; font-weight: 400; }
+  button { min-height: 44px; font-size: 1rem; padding: 8px 16px; }
+  #error { color: #b00020; font-weight: 600; margin: 12px 0; }
+  #notice { color: #8a5d00; font-weight: 600; margin: 12px 0; }
+  #summary { margin: 12px 0; font-size: 1.1rem; }
+  .badge { display: inline-block; border: 1px solid currentColor; border-radius: 4px; padding: 1px 6px; font-size: 0.85rem; margin-left: 8px; }
+  ul#results { list-style: none; padding: 0; }
+  ul#results li { border-bottom: 1px solid #8883; padding: 10px 0; }
+  .spare-ok { color: #137333; font-weight: 700; }
+  .spare-bad { color: #b00020; font-weight: 700; }
+  .muted { opacity: 0.75; }
+  #serving-hint { display: none; border: 1px solid currentColor; border-radius: 8px; padding: 12px; margin: 12px 0; }
+</style>
+</head>
+<body>
+<h1>MyWhoosh Route Calculator</h1>
+<p class="muted">Drop in a <code>.zwo</code> workout, enter your FTP + weight, and see which MyWhoosh routes fit the workout time. Everything runs in this page — your file never leaves your device.</p>
+
+<div id="serving-hint">The app couldn't load its route data. Serve this folder over HTTP (e.g. <code>npx serve</code>) or use the GitHub Pages link — opening <code>index.html</code> directly from disk blocks data loading in most browsers.</div>
+
+<label for="ftp">FTP (watts)</label>
+<input id="ftp" type="number" min="1" step="1" value="156" inputmode="numeric">
+
+<label for="weight">Weight (kg)</label>
+<input id="weight" type="number" min="1" step="0.1" placeholder="e.g. 75" inputmode="decimal">
+
+<label for="freeride">FreeRide assumption (% of FTP)</label>
+<input id="freeride" type="number" min="1" max="150" step="1" value="70" inputmode="numeric">
+
+<div id="drop" role="button" tabindex="0" aria-label="Upload a ZWO file">
+  Drop a <code>.zwo</code> file here, or <button id="pick" type="button">choose a file</button>
+  <input id="file" type="file" accept=".zwo" hidden>
+</div>
+
+<div class="row">
+  <input id="onlyfits" type="checkbox" checked>
+  <label for="onlyfits">Only show routes that fit</label>
+</div>
+<div class="row">
+  <input id="allowover" type="checkbox">
+  <label for="allowover">Allow 5 min over (close calls)</label>
+</div>
+
+<div id="error" role="alert"></div>
+<div id="notice"></div>
+<div id="summary"></div>
+<ul id="results"></ul>
+
+<script>
+  window.__appReady = false;
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (!window.__appReady) document.getElementById('serving-hint').style.display = 'block';
+    }, 1500);
+  });
+</script>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
