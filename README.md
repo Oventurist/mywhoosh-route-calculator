@@ -56,3 +56,7 @@ node scripts/refresh-routes.mjs --fixture tests/fixtures/routes-sample.html --ou
 ```sh
 node --test tests/zwo.test.js tests/physics.test.js tests/routes.test.js tests/match.test.js tests/refresh.test.js
 ```
+
+## License
+
+Copyright (c) 2026 Oventurist. All rights reserved. See [LICENSE](./LICENSE).
