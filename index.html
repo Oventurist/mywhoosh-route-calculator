@@ -9,6 +9,9 @@
   body { font-family: system-ui, sans-serif; max-width: 640px; margin: 0 auto; padding: 16px; line-height: 1.4; }
   label { display: block; margin: 12px 0 4px; font-weight: 600; }
   input[type="number"] { width: 100%; min-height: 44px; font-size: 1.1rem; padding: 8px; box-sizing: border-box; }
+  .weight-row { display: flex; gap: 8px; }
+  .weight-row input { flex: 1; }
+  .weight-row select { min-height: 44px; font-size: 1.1rem; padding: 8px; }
   #drop { border: 2px dashed #888; border-radius: 8px; padding: 28px 16px; text-align: center; margin: 16px 0; cursor: pointer; min-height: 44px; }
   #drop.over { border-color: currentColor; }
   .row { display: flex; gap: 12px; align-items: center; min-height: 44px; }
@@ -35,8 +38,14 @@
 <label for="ftp">FTP (watts)</label>
 <input id="ftp" type="number" min="1" step="1" value="156" inputmode="numeric">
 
-<label for="weight">Weight (kg)</label>
-<input id="weight" type="number" min="1" step="0.1" placeholder="e.g. 75" inputmode="decimal">
+<label for="weight">Weight</label>
+<div class="weight-row">
+<input id="weight" type="number" min="1" step="1" placeholder="e.g. 165" inputmode="decimal">
+<select id="weight-unit" aria-label="Weight unit">
+<option value="lb" selected>lb</option>
+<option value="kg">kg</option>
+</select>
+</div>
 
 <label for="freeride">FreeRide assumption (% of FTP)</label>
 <input id="freeride" type="number" min="1" max="150" step="1" value="70" inputmode="numeric">

@@ -7,6 +7,8 @@ import { rankRoutes } from './match.js';
 const $ = (id) => document.getElementById(id);
 const ftpEl = $('ftp');
 const weightEl = $('weight');
+const weightUnitEl = $('weight-unit');
+const LB_PER_KG = 2.20462;
 const freerideEl = $('freeride');
 const onlyFitsEl = $('onlyfits');
 const allowOverEl = $('allowover');
@@ -45,13 +47,31 @@ function readNumber(el) {
   return Number.isFinite(v) && v > 0 ? v : null;
 }
 
+function readWeightKg() {
+  const v = readNumber(weightEl);
+  if (v === null) return null;
+  return weightUnitEl && weightUnitEl.value === 'kg' ? v : v / LB_PER_KG;
+}
+
+function onUnitChange() {
+  const v = parseFloat(weightEl.value);
+  if (Number.isFinite(v) && v > 0) {
+    const converted =
+      weightUnitEl.value === 'kg' ? v / LB_PER_KG : v * LB_PER_KG;
+    weightEl.value = String(Math.round(converted * 10) / 10);
+  }
+  weightEl.placeholder = weightUnitEl.value === 'kg' ? 'e.g. 75' : 'e.g. 165';
+  weightEl.step = weightUnitEl.value === 'kg' ? '0.1' : '1';
+  render();
+}
+
 function render() {
   errorEl.textContent = '';
   noticeEl.textContent = '';
   if (!workout || !routes) return;
 
   const ftp = readNumber(ftpEl);
-  const weight = readNumber(weightEl);
+  const weight = readWeightKg();
   const freeridePct = readNumber(freerideEl);
   if (ftp === null || weight === null || freeridePct === null) {
     summaryEl.textContent = '';
@@ -169,6 +189,7 @@ for (const el of [ftpEl, weightEl, freerideEl, onlyFitsEl, allowOverEl]) {
   el.addEventListener('input', render);
   el.addEventListener('change', render);
 }
+weightUnitEl.addEventListener('change', onUnitChange);
 
 try {
   const res = await fetch('./routes.json');
