@@ -43,7 +43,7 @@
   @media (max-width: 768px) { .wrap { padding: 0 1.5rem; } }
   .topbar-inner {
     display: flex; justify-content: space-between; align-items: center;
-    min-height: 5rem; padding: .75rem 0; gap: 1rem;
+    min-height: 5rem; padding-block: .75rem; gap: 1rem;
   }
   .brand { display: flex; align-items: center; gap: .75rem; min-width: 0; flex: 1 1 auto; }
   .brand-mark {
@@ -67,7 +67,10 @@
   @media (max-width: 480px) {
     .brand-tag { display: none; }
     .brand { gap: .5rem; }
-    .unit-toggle button { padding: .25rem .6rem; }
+    .topbar-inner { gap: .6rem; min-height: 3.75rem; }
+    .brand-name { white-space: normal; line-height: 1.1; font-size: .95rem; overflow-wrap: break-word; }
+    .unit-toggle { padding: .2rem; gap: .2rem; }
+    .unit-toggle button { padding: .25rem .6rem; font-size: .7rem; min-height: 1.9rem; }
   }
   .unit-toggle button {
     border: 0; cursor: pointer; min-height: 2rem; padding: .25rem .8rem;
@@ -92,19 +95,21 @@
   .hero-grid {
     position: relative; z-index: 1;
     display: grid; grid-template-columns: 1fr; gap: 3rem;
-    padding: 4rem 0; align-items: center;
+    padding-block: 4rem; align-items: center;
   }
-  @media (min-width: 1024px) { .hero-grid { grid-template-columns: 7fr 5fr; padding: 6rem 0; } }
+  @media (min-width: 1024px) { .hero-grid { grid-template-columns: 7fr 5fr; padding-block: 6rem; } }
   .hero-kicker {
     display: inline-block; padding: .25rem .75rem; margin-bottom: 1.5rem;
     background: rgba(255,255,255,.1); border-left: 4px solid var(--volt);
     font-family: "JetBrains Mono", monospace; font-size: .75rem; font-weight: 700;
     color: var(--volt); text-transform: uppercase; letter-spacing: .08em;
+    line-height: 1.6; max-width: 100%;
   }
   .hero h1 {
     font-family: "Space Grotesk", sans-serif; font-weight: 800;
     text-transform: uppercase; letter-spacing: -.02em; line-height: 1.05;
-    font-size: 2.25rem; margin: 0 0 1.5rem;
+    font-size: clamp(1.9rem, 8.5vw, 2.25rem); margin: 0 0 1.5rem;
+    overflow-wrap: break-word; text-wrap: balance;
   }
   @media (min-width: 1024px) { .hero h1 { font-size: 3.75rem; } }
   .hero h1 .accent { color: var(--volt); display: inline-block; transform: skewX(-6deg); }
@@ -114,11 +119,16 @@
     display: inline-flex; align-items: center; gap: .6rem;
     background: var(--navy-950); border: 1px solid rgba(212,255,0,.4);
     padding: .6rem 1rem; font-family: "JetBrains Mono", monospace; font-size: .8rem; color: rgba(255,255,255,.9);
+    max-width: 100%;
   }
   .telemetry {
     background: var(--navy-950); border: 2px solid var(--volt);
     padding: 1.75rem; box-shadow: 6px 6px 0px var(--volt);
     position: relative; max-width: 28rem; width: 100%; justify-self: end;
+    min-width: 0;
+  }
+  @media (max-width: 768px) {
+    .telemetry { max-width: 100%; padding: 1.25rem; box-shadow: 4px 4px 0px var(--volt); }
   }
   .telemetry-flag {
     position: absolute; top: -.8rem; right: 1.5rem;
@@ -133,15 +143,19 @@
     font-family: "JetBrains Mono", monospace; font-size: .72rem; text-transform: uppercase;
   }
   .telemetry-head .ready { color: var(--volt); font-weight: 700; }
-  #summary { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 1.15rem; color: #fff; margin: 1rem 0 .25rem; }
+  #summary { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 1.15rem; color: #fff; margin: 1rem 0 .25rem; overflow-wrap: anywhere; word-break: break-word; }
   #summary:empty { display: none; }
   #notice { font-family: "JetBrains Mono", monospace; font-size: .75rem; color: var(--amber); margin: 0 0 .5rem; }
   #notice:empty { display: none; }
   .telemetry-idle { font-family: "JetBrains Mono", monospace; font-size: .8rem; color: rgba(255,255,255,.6); margin: 1rem 0 .25rem; }
   .telemetry-bar { background: var(--navy-850); height: .75rem; border: 1px solid rgba(255,255,255,.2); padding: 2px; margin: 1rem 0 .75rem; }
   .telemetry-bar > div { background: var(--volt); height: 100%; width: 82%; position: relative; }
-  .telemetry-foot { display: flex; justify-content: space-between; font-family: "JetBrains Mono", monospace; font-size: .7rem; color: rgba(255,255,255,.6); }
+  .telemetry-foot { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; font-family: "JetBrains Mono", monospace; font-size: .7rem; color: rgba(255,255,255,.6); }
   .telemetry-foot strong { color: #fff; background: rgba(255,255,255,.1); padding: .1rem .5rem; }
+  @media (max-width: 768px) {
+    .hero-grid { gap: 2rem; padding-block: 2.5rem; }
+    .hero p.lead { font-size: 1rem; }
+  }
 
   /* Calculator */
   .calc { padding: 3.5rem 0; }
