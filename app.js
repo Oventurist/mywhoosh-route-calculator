@@ -24,6 +24,7 @@ const errorEl = $('error');
 const noticeEl = $('notice');
 const summaryEl = $('summary');
 const resultsEl = $('results');
+const cardsEl = $('cards');
 const matchCountEl = $('match-count');
 const idleEl = $('telemetry-idle');
 const fileBadgeEl = $('file-loaded-badge');
@@ -108,6 +109,7 @@ function render() {
   if (ftp === null || weight === null || freeridePct === null) {
     summaryEl.textContent = '';
     resultsEl.innerHTML = '';
+    if (cardsEl) cardsEl.innerHTML = '';
     errorEl.textContent = 'Enter your FTP, weight, and FreeRide % (all must be above zero).';
     return;
   }
@@ -143,6 +145,7 @@ function render() {
   }
 
   resultsEl.innerHTML = '';
+  if (cardsEl) cardsEl.innerHTML = '';
   const fitsCount = shown.filter((r) => r.fits).length;
   if (matchCountEl) {
     matchCountEl.textContent = `Matched routes: ${shown.length} candidate${shown.length === 1 ? '' : 's'} • ${fitsCount} fit`;
@@ -156,6 +159,12 @@ function render() {
     td.textContent = 'No routes fit this workout. Try "Allow 5 min over", or a longer workout.';
     tr.appendChild(td);
     resultsEl.appendChild(tr);
+    if (cardsEl) {
+      const empty = document.createElement('div');
+      empty.className = 'cards-empty';
+      empty.textContent = 'No routes fit this workout. Try "Allow 5 min over", or a longer workout.';
+      cardsEl.appendChild(empty);
+    }
     return;
   }
   for (const r of shown) {
@@ -177,33 +186,84 @@ function render() {
     name.textContent = r.route.name;
     routeTd.append(world, name);
 
+    const distText = formatDistance(r.route.distanceKm, unitSystem());
+    const elevText = formatElevation(r.route.elevM, unitSystem());
+    const gradeText = r.route.distanceKm > 0
+      ? `${((r.route.elevM / (r.route.distanceKm * 1000)) * 100).toFixed(1)}%`
+      : '—';
+    const predText = fmtRange(r.lowS, r.highS);
+    const spareText = `${fmtSpare(r.spareS)} to spare`;
+
     const distTd = document.createElement('td');
     distTd.className = 'n num';
-    distTd.textContent = formatDistance(r.route.distanceKm, unitSystem());
+    distTd.textContent = distText;
 
     const elevTd = document.createElement('td');
     elevTd.className = 'n num';
-    elevTd.textContent = formatElevation(r.route.elevM, unitSystem());
+    elevTd.textContent = elevText;
 
     const gradeTd = document.createElement('td');
     gradeTd.className = 'n num';
-    gradeTd.textContent = r.route.distanceKm > 0
-      ? `${((r.route.elevM / (r.route.distanceKm * 1000)) * 100).toFixed(1)}%`
-      : '—';
+    gradeTd.textContent = gradeText;
 
     const predTd = document.createElement('td');
     predTd.className = 'n num';
-    predTd.textContent = fmtRange(r.lowS, r.highS);
+    predTd.textContent = predText;
 
     const deltaTd = document.createElement('td');
     deltaTd.style.textAlign = 'center';
     const delta = document.createElement('span');
     delta.className = `delta ${r.fits ? 'delta-ok' : 'delta-bad'}`;
-    delta.textContent = `${fmtSpare(r.spareS)} to spare`;
+    delta.textContent = spareText;
     deltaTd.appendChild(delta);
 
     tr.append(statusTd, routeTd, distTd, elevTd, gradeTd, predTd, deltaTd);
     resultsEl.appendChild(tr);
+
+    if (cardsEl) {
+      const card = document.createElement('div');
+      card.className = 'route-card';
+      const top = document.createElement('div');
+      top.className = 'route-card-top';
+      const titleWrap = document.createElement('div');
+      const worldC = document.createElement('div');
+      worldC.className = 'route-world';
+      worldC.textContent = r.route.world;
+      const nameC = document.createElement('div');
+      nameC.className = 'route-name';
+      nameC.textContent = r.route.name;
+      titleWrap.append(worldC, nameC);
+      const badgeC = badge.cloneNode(true);
+      top.append(titleWrap, badgeC);
+      const stats = document.createElement('div');
+      stats.className = 'route-card-stats';
+      const statDefs = [
+        ['Distance', distText],
+        ['Elevation', elevText],
+        ['Avg grade', gradeText],
+        ['Predicted', predText],
+      ];
+      for (const [label, value] of statDefs) {
+        const s = document.createElement('div');
+        s.className = 'stat';
+        const l = document.createElement('span');
+        l.className = 'stat-label';
+        l.textContent = label;
+        const v = document.createElement('span');
+        v.className = 'stat-value';
+        v.textContent = value;
+        s.append(l, v);
+        stats.appendChild(s);
+      }
+      const foot = document.createElement('div');
+      foot.className = 'route-card-foot';
+      const deltaC = document.createElement('span');
+      deltaC.className = `delta ${r.fits ? 'delta-ok' : 'delta-bad'}`;
+      deltaC.textContent = spareText;
+      foot.appendChild(deltaC);
+      card.append(top, stats, foot);
+      cardsEl.appendChild(card);
+    }
   }
 }
 
